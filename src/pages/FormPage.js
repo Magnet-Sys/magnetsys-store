@@ -78,7 +78,7 @@ const FormPage = () => {
 
   return (
     <div>
-      <h2 className="mb-3">Formulario de contacto</h2>
+      <h2 className="mb-3">Formulario de contacto (Ejercicio 2)</h2>
       <p className="mb-4">
         Completa el formulario para solicitar información o reservar un vinilo en MagnetSys Store.
       </p>
