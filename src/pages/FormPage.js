@@ -148,13 +148,17 @@ const FormPage = () => {
           </small>
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-success"
-          disabled={sending}
-        >
-          {sending ? 'Enviando...' : 'Enviar'}
-        </button>
+        <div className="row mt-3">
+          <div className="col-12 col-md-6 col-lg-4 mx-auto d-grid">
+            <button
+              type="submit"
+              className="btn btn-success btn-lg"
+              disabled={sending}
+            >
+              {sending ? 'Enviando...' : 'Enviar'}
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );

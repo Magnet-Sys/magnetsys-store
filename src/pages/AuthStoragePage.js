@@ -92,7 +92,7 @@ const AuthStoragePage = () => {
         setMessage('Registro exitoso. Ya puedes completar tu perfil.');
       } else {
         await auth.signInWithEmailAndPassword(email, password);
-        setMessage('Inicio de sesión exitoso. Bienvenido de vuelta.');
+        setMessage('Inicio de sesión exitoso.');
       }
     } catch (error) {
       console.error(error);
