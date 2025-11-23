@@ -20,7 +20,7 @@ function App() {
             <Link className="nav-link" to="/formulario">Formulario</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/auth">Auth & Archivos</Link>
+            <Link className="nav-link" to="/auth">Auth & Storage</Link>
           </li>
         </ul>
       </nav>
@@ -33,6 +33,13 @@ function App() {
         <Route exact path="/" component={ProductPage} />
         <Route path="/producto/:id" component={ProductDetailPage} />
       </Switch>
+
+       {/* Footer */}
+        <footer className="mt-auto bg-white">
+          <div className="container py-3 text-center text-muted small">
+            © 2025 - Creado por Dianna Monsalve
+          </div>
+        </footer>
     </div>
   );
 }

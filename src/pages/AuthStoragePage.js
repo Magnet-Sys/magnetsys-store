@@ -211,7 +211,7 @@ const AuthStoragePage = () => {
 
   return (
     <div>
-      <h2 className="mb-3">Perfil y despacho (Ejercicio 3)</h2>
+      <h2 className="mb-3">Perfil de usuario (Ejercicio 3)</h2>
       <p className="mb-4">
         Regístrate o inicia sesión para configurar tu perfil, subir una foto y
         completar tus datos de despacho para MagnetSys Store.
