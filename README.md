@@ -1,70 +1,193 @@
-# Getting Started with Create React App
+# MagnetSys Store
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación web desarrollada en **React** como parte de la evaluación de React + Firebase + Android.  
+MagnetSys Store es una tienda de vinilos que permite:
 
-## Available Scripts
+- Navegar por un catálogo de 15 discos.
+- Gestionar un carrito de compras con stock.
+- Enviar consultas/pedidos mediante un formulario.
+- Autenticarse con Firebase, subir foto de perfil y guardar datos de despacho.
+- Generar un **build web** y empaquetar la app como **APK firmado** usando Cordova.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 1. Stack tecnológico
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **React** (Create React App).
+- **React Router DOM 5.x** (enrutamiento clásico con `BrowserRouter`, `Route`, `Switch`).
+- **Firebase 8.10.1**:
+  - Authentication (email/contraseña).
+  - Cloud Firestore.
+  - Cloud Storage.
+- **simple-react-validator 1.6.2** (validación de formularios).
+- **Axios** (disponible para peticiones HTTP).
+- **Bootstrap 5** + **Bootstrap Icons** (estilos y grilla responsiva).
+- **Cordova** (empaquetado Android).
+- Node.js **v22.19.0**.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 2. Estructura por ejercicios (requerimientos de la evaluación)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2.1. Ejercicio 1 – Catálogo de productos
 
-### `npm run build`
+**Ruta:** `/` (inicio)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Requerimientos cubiertos:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Listado de **15 vinilos** definido en `src/data/products.js`.
+- Vista en **grilla**:
+  - 5 columnas en escritorio.
+  - 2 columnas en pantallas pequeñas (Bootstrap grid).
+- Cada tarjeta de producto muestra:
+  - Imagen del vinilo.
+  - Título + artista.
+  - Precio.
+  - Stock disponible.
+  - Estado “**Sin stock**” cuando la cantidad es 0.
+  - Botón **Agregar al carrito** (deshabilitado sin stock).
+  - Botón **Ver detalle** que navega a `/producto/:id`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2.2. Ejercicio 2 – Formulario de contacto / pedido
 
-### `npm run eject`
+**Ruta:** `/formulario`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Funcionalidades:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Formulario para consultas o reserva de vinilos con campos:
+  - Nombre.
+  - Correo electrónico.
+  - Asunto.
+  - Mensaje.
+- Validación con **simple-react-validator**:
+  - Campos requeridos.
+  - Formato de correo válido.
+  - Mínimo de caracteres en mensaje.
+- Mensajes de error bajo cada campo con estilo de Bootstrap.
+- Al enviar:
+  - Se valida el formulario.
+  - Si es válido, se guarda el registro en **Firestore**, colección `consultas`.
+  - Se muestra una alerta de éxito.
+  - Se limpian los campos **y** el estado de validaciones, dejando el formulario listo para una nueva consulta.
+  - Ante errores de Firebase se muestra alerta de error amigable.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2.3. Ejercicio 3 – Autenticación, perfil y datos de despacho
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Ruta:** `/auth`
 
-## Learn More
+Funcionalidades:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Registro e inicio de sesión con **Firebase Authentication** (email y contraseña).
+- Vista de **perfil y despacho** para el usuario autenticado:
+  - Muestra el correo del usuario actual.
+  - **Foto de perfil**:
+    - Selección de imagen (jpg/png).
+    - Subida de archivo a **Firebase Storage**.
+    - Barra de progreso y manejo de errores.
+    - Visualización de la foto guardada.
+  - **Datos de despacho**:
+    - Nombre completo.
+    - Dirección.
+    - Teléfono.
+    - Ciudad.
+    - Región.
+  - Guardado en **Firestore** bajo el documento `usuarios/{uid}`.
+  - Carga automática de los datos existentes al ingresar nuevamente.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## 3. Carrito de compras (valor agregado)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Aunque el carrito no estaba especificado en detalle en la pauta, se implementó una solución completa:
 
-### Analyzing the Bundle Size
+- Panel de carrito fijo en el lado derecho de la vista de productos.
+- Funciones principales:
+  - Agregar productos desde las tarjetas.
+  - Si se agrega el mismo vinilo, se incrementa la **cantidad**, sin duplicar filas.
+  - Cálculo automático de:
+    - Cantidad total de ítems.
+    - Subtotal por producto.
+    - Total general del carrito.
+  - Botón de eliminar con **ícono de papelera** (Bootstrap Icons).
+  - Botón **Pagar**:
+    - Muestra el mensaje `Compra realizada con éxito`.
+    - Limpia el carrito y restablece el estado visual.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Manejo de stock
 
-### Making a Progressive Web App
+- Cada vez que se agrega un producto al carrito, se **descuenta** del stock visible.
+- Cuando el stock llega a 0:
+  - El botón cambia a **“Sin stock”**.
+  - El botón queda deshabilitado.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Persistencia del carrito (extra)
 
-### Advanced Configuration
+- El estado del carrito y del stock se guarda en **localStorage**.
+- Si el usuario recarga la página o entra al detalle de un producto y vuelve al inicio:
+  - El carrito y los stocks se mantienen.
+- Al presionar **Pagar**, se limpia el carrito tanto en memoria como en `localStorage`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 4. Mejoras de interfaz y usabilidad
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Layout responsivo con Bootstrap:
+  - 5 columnas en escritorio para mostrar cómodamente los 15 vinilos.
+  - 2 columnas en tablets y móviles.
+- Botones con colores intuitivos:
+  - Verde (`btn-success`): **Agregar al carrito**.
+  - Azul (`btn-primary`): **Ver detalle**.
+  - Rojo (`btn-outline-danger`): eliminar en el carrito.
+  - Botones deshabilitados para estado **Sin stock**.
+- Formulario de contacto:
+  - Botón de enviar ancho y adaptable (responsive).
+  - Alertas de éxito/error en colores estándar de Bootstrap.
+- Pantalla de perfil:
+  - Muestra mensajes de error si falla la subida de imagen o el guardado en Firestore.
+  - Muestra mensajes de éxito cuando los datos de despacho se guardan correctamente.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 5. Estructura principal del código
+
+- `src/App.js`  
+  Definición de rutas (`/`, `/formulario`, `/auth`, `/producto/:id`) y layout principal.
+
+- `src/components/ProductListContainer.js`  
+  Lista todos los productos, gestiona el **carrito**, el **stock** y la persistencia en `localStorage`.
+
+- `src/components/ProductItem.js`  
+  Tarjeta individual de producto (imagen, título, precio, stock, botones).
+
+- `src/pages/ProductDetailPage.js`  
+  Vista de detalle para un vinilo específico.
+
+- `src/pages/FormPage.js`  
+  Formulario de contacto/pedido con validación y envío a Firestore.
+
+- `src/pages/AuthStoragePage.js`  
+  Autenticación, subida de foto a Storage y formulario de datos de despacho en Firestore.
+
+- `src/firebaseConfig.js`  
+  Inicialización de Firebase (contiene las claves del proyecto `magnetsys-store`).
+
+- `src/data/products.js`  
+  Arreglo con los 15 vinilos (título, artista, precio, stock e imagen).
+
+---
+
+## 6. Scripts disponibles (React)
+
+En el directorio del proyecto de escritorio:
+
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo (http://localhost:3000)
+npm start
+
+# Construir versión de producción en /build
+npm run build
+
+# Ejecutar pruebas (no utilizadas en la evaluación, pero disponibles)
+npm test
